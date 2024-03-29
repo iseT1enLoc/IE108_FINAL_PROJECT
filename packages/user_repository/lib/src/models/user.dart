@@ -14,6 +14,9 @@ class MyUser {
     required this.address,
     required this.hasActiveCart,
   });
+  String GetName() {
+    return name;
+  }
 
   static final empty = MyUser(
     userId: '',

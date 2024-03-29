@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
+        scrolledUnderElevation: 0,
         title: Row(
           children: [
             Image.asset('assets/8.png', scale: 14),
@@ -174,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                                                   TextDecoration.lineThrough),
                                         ),
                                       ],
-                                    ),
+                                    ), //Đây là dấu cộng
                                     IconButton(
                                         onPressed: () {},
                                         icon: const Icon(

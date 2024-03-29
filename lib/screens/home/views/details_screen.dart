@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pizza_app/screens/home/blocs/order_pizza_bloc/order_pizza_bloc.dart';
+import 'package:pizza_app/screens/home/views/bill_screen.dart';
 import 'package:pizza_repository/pizza_repository.dart';
 import '../../../components/macro.dart';
 
@@ -130,7 +133,16 @@ class DetailsScreen extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: 50,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider(
+                                  create: (BuildContext context) => OrderBloc(),
+                                  child: BillScreens(),
+                                ),
+                              ));
+                        },
                         style: TextButton.styleFrom(
                             elevation: 3.0,
                             backgroundColor: Colors.black,
