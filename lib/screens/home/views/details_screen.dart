@@ -1,3 +1,5 @@
+import 'package:bill_repository/bill_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -134,12 +136,16 @@ class DetailsScreen extends StatelessWidget {
                       height: 50,
                       child: TextButton(
                         onPressed: () {
+                          FirebaseBillRepo? _bill;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => BlocProvider(
-                                  create: (BuildContext context) => OrderBloc(),
-                                  child: BillScreens(),
+                                  create: (BuildContext context) =>
+                                      OrderBloc(_bill),
+                                  child: BillScreens(
+                                    pizza: this.pizza,
+                                  ),
                                 ),
                               ));
                         },

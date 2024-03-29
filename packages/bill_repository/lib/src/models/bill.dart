@@ -19,6 +19,13 @@ class Bill {
     );
   }
 
+  static final empty = Bill(
+    billId: 'NaN',
+    amount: '',
+    phone_number: '',
+    address: '',
+  );
+
   static Bill fromEntity(BillEntity entity) {
     return Bill(
       billId: entity.billId,

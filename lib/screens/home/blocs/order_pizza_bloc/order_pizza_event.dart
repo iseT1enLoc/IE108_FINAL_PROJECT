@@ -1,6 +1,6 @@
 part of 'order_pizza_bloc.dart';
 
-sealed class OrderEvent extends Equatable {
+abstract class OrderEvent extends Equatable {
   const OrderEvent();
   @override
   List<Object> get props => [];
@@ -11,10 +11,7 @@ class OrderRequired extends OrderEvent {
   final String phone_number;
   final String address;
 
-  OrderRequired(
-      {required this.amount,
-      required this.phone_number,
-      required this.address});
+  OrderRequired(this.amount, this.phone_number, this.address);
   @override
-  List<Object> get props => [amount, phone_number, address];
+  List<String> get props => [amount, phone_number, address];
 }

@@ -1,18 +1,50 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:bill_repository/bill_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pizza_repository/pizza_repository.dart';
+
 import 'package:pizza_app/screens/home/blocs/order_pizza_bloc/order_pizza_bloc.dart';
 
-class BillScreens extends StatelessWidget {
-  BillScreens({super.key});
+// ignore: must_be_immutable
+class BillScreens extends StatefulWidget {
+  Pizza pizza;
+  BillScreens({
+    Key? key,
+    required this.pizza,
+  }) : super(key: key);
+  @override
+  State<BillScreens> createState() => _BillScreensState();
+}
+
+final billCollection = FirebaseFirestore.instance.collection("bills");
+
+class _BillScreensState extends State<BillScreens> {
   final amountController = TextEditingController();
+
   final phoneController = TextEditingController();
+
   final addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+// Option 1: Check current user directly (one-time check)
+    User? currentUser = auth.currentUser;
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
     return Scaffold(
       appBar: AppBar(
-        title: Text("Fill in your infomation"),
+        title: Text(widget.pizza.name + " pizza"),
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
       ),
@@ -27,6 +59,11 @@ class BillScreens extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: Image.network(widget.pizza.picture),
+              ),
               TextField(
                 controller: amountController,
                 onChanged: (value) {},
@@ -60,14 +97,28 @@ class BillScreens extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              BlocBuilder<OrderBloc, OrderState>(
-                builder: (context, state) {
-                  return CupertinoButton(
-                    child: Text("Order"),
-                    onPressed: () {},
-                    color: Colors.green,
-                  );
+              CupertinoButton(
+                child: Text("Order"),
+                onPressed: () {
+                  context.read<OrderBloc>().add(
+                        OrderRequired(
+                          amountController.text,
+                          phoneController.text,
+                          addressController.text,
+                        ),
+                      );
+
+                  /* billCollection.add({
+                    "user_id": currentUser?.uid,
+                    "pizza_name": widget.pizza.name,
+                    "amount": amountController
+                        .text, // Use single quotes for field names in Dart
+                    "phone_number": phoneController.text,
+                    'address': addressController.text,
+                  }); */
+                  Navigator.of(context).pop();
                 },
+                color: Colors.green,
               )
             ],
           ),

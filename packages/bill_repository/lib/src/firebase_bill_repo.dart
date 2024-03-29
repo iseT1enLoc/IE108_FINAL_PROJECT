@@ -10,8 +10,12 @@ class FirebaseBillRepo implements BillRepository {
   Future<void> OrderPizza(
       String amount, String phone_number, String address) async {
     try {
-      await billCollection
-          .add({amount: amount, phone_number: phone_number, address: address});
+      await billCollection.add({
+        "amount": amount, // Use single quotes for field names in Dart
+        "phone_number": phone_number,
+        'address': address,
+      });
+      print("add data successfully");
     } catch (e) {
       log(e.toString());
       rethrow;
