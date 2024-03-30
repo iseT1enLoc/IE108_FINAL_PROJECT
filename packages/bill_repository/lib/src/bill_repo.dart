@@ -1,3 +1,5 @@
+import 'package:bill_repository/bill_repository.dart';
+
 abstract class BillRepository {
-  Future<void> OrderPizza(String amount, String phone_number, String address);
+  Future<Bill> OrderPizza(Bill _bill);
 }

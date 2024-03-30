@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pizza_repository/pizza_repository.dart';
 
 import 'package:pizza_app/screens/home/blocs/order_pizza_bloc/order_pizza_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 // ignore: must_be_immutable
 class BillScreens extends StatefulWidget {
@@ -23,25 +25,24 @@ class BillScreens extends StatefulWidget {
 final billCollection = FirebaseFirestore.instance.collection("bills");
 
 class _BillScreensState extends State<BillScreens> {
-  final amountController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
 
-  final phoneController = TextEditingController();
-
-  final addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  User? current_user = FirebaseAuth.instance.currentUser;
+  String? my_user_id;
+  Bill my_bill = Bill.empty;
+  @override
+  void initState() {
+    if (current_user != null) {
+      setState(() {
+        my_user_id = current_user?.uid;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-
-// Option 1: Check current user directly (one-time check)
-    User? currentUser = auth.currentUser;
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print('User is signed in!');
-      }
-    });
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.pizza.name + " pizza"),
@@ -97,28 +98,31 @@ class _BillScreensState extends State<BillScreens> {
               const SizedBox(
                 height: 20,
               ),
-              CupertinoButton(
-                child: Text("Order"),
-                onPressed: () {
-                  context.read<OrderBloc>().add(
-                        OrderRequired(
-                          amountController.text,
-                          phoneController.text,
-                          addressController.text,
-                        ),
-                      );
-
-                  /* billCollection.add({
-                    "user_id": currentUser?.uid,
-                    "pizza_name": widget.pizza.name,
-                    "amount": amountController
-                        .text, // Use single quotes for field names in Dart
-                    "phone_number": phoneController.text,
-                    'address': addressController.text,
-                  }); */
-                  Navigator.of(context).pop();
+              BlocBuilder<OrderBloc, OrderState>(
+                builder: (context, state) {
+                  return CupertinoButton(
+                    child: Text("Order"),
+                    onPressed: () {
+                      setState(() {
+                        my_bill.is_dilivered = false;
+                        my_bill.pizza_name = widget.pizza.name;
+                        my_bill.address = addressController.text;
+                        my_bill.phone_number = phoneController.text;
+                        my_bill.number_of_pizzas = amountController.text;
+                        my_bill.user_id = my_user_id!;
+                        my_bill.price = int.parse(amountController.text) *
+                            widget.pizza.price *
+                            widget.pizza.discount *
+                            1.0; //calculate the total bill price
+                      });
+                      context.read<OrderBloc>().add(
+                            OrderRequired(my_bill),
+                          );
+                      Navigator.of(context).pop();
+                    },
+                    color: Colors.green,
+                  );
                 },
-                color: Colors.green,
               )
             ],
           ),

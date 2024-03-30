@@ -65,4 +65,22 @@ class FirebaseUserRepo implements UserRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<MyUser?> getCurrentUser() async {
+    MyUser my_user = MyUser.empty;
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      User? user = await _auth.currentUser;
+      if (user != null) {
+        my_user = await usersCollection.doc(user.uid).get().then((value) =>
+            MyUser.fromEntity(MyUserEntity.fromDocument(value.data()!)));
+        return my_user;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 }

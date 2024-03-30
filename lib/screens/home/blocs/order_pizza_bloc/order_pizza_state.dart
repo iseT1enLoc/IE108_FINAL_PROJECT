@@ -9,7 +9,12 @@ sealed class OrderState extends Equatable {
 
 class OrderInitial extends OrderState {}
 
-class OrderSuccess extends OrderState {}
+class OrderSuccess extends OrderState {
+  Bill _bill;
+  OrderSuccess(this._bill);
+  @override
+  List<Object> get props => [_bill];
+}
 
 class OrderFailure extends OrderState {}
 

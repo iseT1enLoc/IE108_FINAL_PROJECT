@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pizza_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
 import 'package:pizza_app/screens/home/blocs/get_pizza_bloc/get_pizza_bloc.dart';
 import 'package:pizza_app/screens/home/views/details_screen.dart';
+import 'package:user_repository/user_repository.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

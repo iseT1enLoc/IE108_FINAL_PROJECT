@@ -7,11 +7,7 @@ abstract class OrderEvent extends Equatable {
 }
 
 class OrderRequired extends OrderEvent {
-  final String amount;
-  final String phone_number;
-  final String address;
+  Bill _bill;
 
-  OrderRequired(this.amount, this.phone_number, this.address);
-  @override
-  List<String> get props => [amount, phone_number, address];
+  OrderRequired(this._bill);
 }

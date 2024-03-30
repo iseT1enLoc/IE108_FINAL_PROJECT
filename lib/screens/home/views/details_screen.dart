@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pizza_app/screens/home/blocs/order_pizza_bloc/order_pizza_bloc.dart';
 import 'package:pizza_app/screens/home/views/bill_screen.dart';
 import 'package:pizza_repository/pizza_repository.dart';
+import 'package:user_repository/user_repository.dart';
 import '../../../components/macro.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -136,18 +137,17 @@ class DetailsScreen extends StatelessWidget {
                       height: 50,
                       child: TextButton(
                         onPressed: () {
-                          FirebaseBillRepo? _bill;
+                          BillRepository? _billrepo;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (BuildContext context) =>
-                                      OrderBloc(_bill),
-                                  child: BillScreens(
-                                    pizza: this.pizza,
-                                  ),
-                                ),
-                              ));
+                                  builder: (context) => BlocProvider(
+                                        create: (context) =>
+                                            OrderBloc(_billrepo),
+                                        child: BillScreens(
+                                          pizza: pizza,
+                                        ),
+                                      )));
                         },
                         style: TextButton.styleFrom(
                             elevation: 3.0,
