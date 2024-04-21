@@ -6,8 +6,7 @@ part 'order_pizza_event.dart';
 part 'order_pizza_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
-  BillRepository? _billrepo;
-  OrderBloc(_billrepo) : super(OrderInitial()) {
+  OrderBloc() : super(OrderInitial()) {
     on<OrderRequired>(
       (event, emit) async {
         emit(OrderProcess());

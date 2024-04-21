@@ -12,6 +12,16 @@ class Pizza {
   int discount;
   Macros macros;
 
+  Pizza.empty()
+      : pizzaId = '',
+        picture = '',
+        isVeg = false,
+        spicy = 0,
+        name = '',
+        description = '',
+        price = 0,
+        discount = 0,
+        macros = Macros(calories: 0, proteins: 0, fat: 0, carbs: 0);
   Pizza({
     required this.pizzaId,
     required this.picture,

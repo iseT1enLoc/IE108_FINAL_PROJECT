@@ -137,17 +137,16 @@ class DetailsScreen extends StatelessWidget {
                       height: 50,
                       child: TextButton(
                         onPressed: () {
-                          BillRepository? _billrepo;
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BlocProvider(
-                                        create: (context) =>
-                                            OrderBloc(_billrepo),
-                                        child: BillScreens(
-                                          pizza: pizza,
-                                        ),
-                                      )));
+                                builder: (context) => BlocProvider(
+                                  create: (context) => OrderBloc(),
+                                  child: BillScreens(
+                                    pizza: pizza,
+                                  ),
+                                ),
+                              ));
                         },
                         style: TextButton.styleFrom(
                             elevation: 3.0,
