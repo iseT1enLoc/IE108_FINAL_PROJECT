@@ -88,8 +88,7 @@ void main() {
     late MockFirebaseAuth mockFirebaseAuth;
     late MockUserRepo mock_user_repo;
     late MockUser mock_user;
-    final String email = 'laimissyour@gmail.com';
-    final String password = 'nvtLoc!@1202';
+
     setUp(() {
       mockFirebaseAuth = MockFirebaseAuth();
       mock_user_repo = MockUserRepo();
@@ -107,9 +106,9 @@ void main() {
         return SignInBloc(mock_user_repo);
       },
       act: (bloc) async {
-        bloc.add(SignInRequired(email, password));
+        bloc.add(SignInRequired('', '')); //replace with the approriate password
       },
-      setUp: () => when(() => mock_user_repo.signIn(email, password))
+      setUp: () => when(() => mock_user_repo.signIn('', ''))
           .thenAnswer((_) => Future.value(true)),
       expect: () => [SignInProcess(), SignInSuccess()],
     );

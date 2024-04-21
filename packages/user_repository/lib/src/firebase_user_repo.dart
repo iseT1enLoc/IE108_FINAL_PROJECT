@@ -24,23 +24,6 @@ class FirebaseUserRepo implements UserRepository {
     });
   }
 
-/*   @override
-  Stream<MyUser?> get user {
-    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
-      if (firebaseUser == null) {
-        return MyUser.empty;
-      } else {
-        final userDoc = await usersCollection.doc(firebaseUser.uid).get();
-        if (userDoc.exists) {
-          final userData = userDoc.data(); // Use null safety check here
-          return MyUser.fromEntity(MyUserEntity.fromDocument(userData!));
-        } else {
-          // Handle case where user document doesn't exist
-          return null; // Or throw an exception
-        }
-      }
-    });
-  } */
 
   @override
   Future<void> signIn(String email, String password) async {
